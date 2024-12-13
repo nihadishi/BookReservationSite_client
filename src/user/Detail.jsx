@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import CookiesAuth from '../controls/Cookies';
+import Header from '../static/Header';
 
 const Detail = () => {
   const { id } = useParams(); // Get the book ID from the URL
@@ -17,9 +19,9 @@ const Detail = () => {
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await axios.get(`/books/${id}`);
+        const response = await axios.get(`/books/book/${id}`);
         setBook(response.data);
-        // Set default warehouse as the first available
+
         if (response.data.Warehouses.length > 0) {
           setSelectedWarehouse(response.data.Warehouses[0]);
         }
@@ -39,32 +41,28 @@ const Detail = () => {
 
   const handleAddToBasket = async () => {
     try {
-      if (!selectedWarehouse) {
-        alert('Please select a warehouse');
-        return;
-      }
-
-      const response = await axios.post(
-        '/books/basket/add',
+      await axios.post(
+        'books/basket/add',
         {
           BookID: book.BookID,
           WarehouseID: selectedWarehouse.WarehouseID,
           Count: count,
         },
         {
-          headers: { Authorization: `Bearer ${authToken}` }, // Pass token for authentication
+          headers: { Authorization: `Bearer ${authToken}` },
         }
       );
+
       alert(`${book.Title} added to your basket from ${selectedWarehouse.Address}!`);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || 'Error adding book to basket');
+      alert(err.response?.data?.message + " catch" || 'Error adding book to basket');
     }
   };
 
   const handleWarehouseChange = (e) => {
     const warehouse = book.Warehouses.find(
-      (wh) => wh.WarehouseID === parseInt(e.target.value)
+      (wh) => wh.WarehouseID === parseInt(e.target.value, 10)
     );
     setSelectedWarehouse(warehouse);
     setCount(1); // Reset count to default when warehouse changes
@@ -75,79 +73,105 @@ const Detail = () => {
     setCount(value > 0 ? value : 1);
   };
 
-  if (loading) return <div className="text-center mt-5"><div className="spinner-border" role="status"></div></div>;
-  if (error) return <div className="alert alert-danger mt-3">{error}</div>;
+  if (loading) {
+    return (
+      <div className="text-center mt-5">
+        <div className="spinner-border" role="status" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="alert alert-danger mt-3">{error}</div>;
+  }
 
   return (
-    <div className="container mt-4">
-      {book ? (
-        <>
-          <div className="card shadow-lg">
-            <div className="card-header bg-primary text-white">
-              <h2 className="card-title">{book.Title}</h2>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                {/* Book Details Section */}
-                <div className="col-md-8 mb-3">
-                  <h5>Details</h5>
-                  <p><strong>Category:</strong> {book.Category}</p>
-                  <p><strong>Price:</strong> ${book.Price}</p>
-                  <p><strong>Author:</strong> {book.AuthorName || 'Unknown'}</p>
-                  <p><strong>Award:</strong> {book.AwardName || 'None'}</p>
-                  <p><strong>Year:</strong> {book.Year}</p>
-                  <p><strong>ISBN:</strong> {book.ISBN}</p>
-                </div>
-
-                {/* Stock and Warehouse Section */}
-                <div className="col-md-4">
-                  <h5>Warehouse Stock</h5>
-                  {book.Warehouses.length > 0 ? (
-                    <>
-                      <select
-                        className="form-select mb-3"
-                        onChange={handleWarehouseChange}
-                        value={selectedWarehouse?.WarehouseID || ''}
-                      >
-                        {book.Warehouses.map((warehouse) => (
-                          <option
-                            key={warehouse.WarehouseID}
-                            value={warehouse.WarehouseID}
-                          >
-                            {warehouse.Address} ({warehouse.Stock} in stock)
-                          </option>
+    <CookiesAuth>
+      <Header />
+      <div className="container mt-4">
+        {book ? (
+          <>
+            <div className="card shadow-lg">
+              <div className="card-header bg-primary text-white">
+                <h2 className="card-title">{book.Title}</h2>
+              </div>
+              <div className="card-body">
+                <div className="row">
+                  {/* Book Details Section */}
+                  <div className="col-md-8 mb-3">
+                    <h5>Details</h5>
+                    <p><strong>Category:</strong> {book.Category}</p>
+                    <p><strong>Price:</strong> ${book.Price}</p>
+                    <p><strong>Author:</strong> {book.Author?.Name || 'Unknown'}</p>
+                    <p><strong>Awards:</strong></p>
+                    {book.Awards.length > 0 ? (
+                      <ul>
+                        {book.Awards.map((award, idx) => (
+                          <li key={idx}>
+                            {award.Name} ({award.Year})
+                          </li>
                         ))}
-                      </select>
-                      <div className="d-flex align-items-center">
-                        <input
-                          type="number"
-                          min="1"
-                          max={selectedWarehouse?.Stock || 1}
-                          value={count}
-                          onChange={handleCountChange}
-                          className="form-control me-2"
-                          style={{ width: '100px' }}
-                        />
-                        <button onClick={handleAddToBasket} className="btn btn-success">
-                          Add to Basket
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-danger">No stock available in any warehouse</p>
-                  )}
+                      </ul>
+                    ) : (
+                      <p>None</p>
+                    )}
+                    <p><strong>Year:</strong> {book.Year}</p>
+                    <p><strong>ISBN:</strong> {book.ISBN}</p>
+                  </div>
+
+                  {/* Stock and Warehouse Section */}
+                  <div className="col-md-4">
+                    <h5>Warehouse Stock</h5>
+                    {book.Warehouses.length > 0 ? (
+                      <>
+                        <select
+                          className="form-select mb-3"
+                          onChange={handleWarehouseChange}
+                          value={selectedWarehouse?.WarehouseID || ''}
+                        >
+                          {book.Warehouses.map((warehouse) => (
+                            <option
+                              key={warehouse.WarehouseID}
+                              value={warehouse.WarehouseID}
+                            >
+                              {warehouse.Address} ({warehouse.Stock} in stock)
+                            </option>
+                          ))}
+                        </select>
+                        <div className="d-flex align-items-center">
+                          <input
+                            type="number"
+                            min="1"
+                            max={selectedWarehouse?.Stock || 1}
+                            value={count}
+                            onChange={handleCountChange}
+                            className="form-control me-2"
+                            style={{ width: '100px' }}
+                          />
+                          <button
+                            onClick={handleAddToBasket}
+                            className="btn btn-success"
+                          >
+                            Add to Basket
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <p className="text-danger">No stock available in any warehouse</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <button onClick={handleBack} className="btn btn-secondary mt-4">
-            Back to List
-          </button>
-        </>
-      ) : (
-        <div className="alert alert-warning mt-4">Book details not available.</div>
-      )}
-    </div>
+            <button onClick={handleBack} className="btn btn-secondary mt-4">
+              Back to List
+            </button>
+          </>
+        ) : (
+          <div className="alert alert-warning mt-4">Book details not available.</div>
+        )}
+      </div>
+    </CookiesAuth>
   );
 };
 

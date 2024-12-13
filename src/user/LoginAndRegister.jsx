@@ -38,7 +38,8 @@ const LoginAndRegister = () => {
     e.preventDefault();
     try {
       const response = await axios.post('/auth/register', registerData);
-      console.log('Registration successful! Please log in.');
+      alert('Registration successful! Please log in.');
+      window.location.reload();
     } catch (error) {
       console.log(`Registration failed: ${error.response?.data?.message || error.message}`);
     }
