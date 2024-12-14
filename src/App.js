@@ -13,6 +13,9 @@ import AdminDashboard from './admin/Dashboard';
 import AdminBooks from './admin/Books';
 import AdminAuthors from './admin/Authors';
 import AdminAwards from './admin/Awards';
+import AdminWarehouses from './admin/Warehouses';
+import AdminContains from './admin/Contains';
+import AdminInventories from './admin/Inventories';
 
 axios.defaults.baseURL = 'http://localhost:2021';
 axios.defaults.withCredentials = true;
@@ -33,6 +36,9 @@ function App() {
         <Route path="/admin/dashboard/books" element={<AdminBooks />} />
         <Route path="/admin/dashboard/authors" element={<AdminAuthors />} />
         <Route path="/admin/dashboard/awards" element={<AdminAwards />} />
+        <Route path="/admin/dashboard/warehouses" element={<AdminWarehouses />} />
+        <Route path="/admin/dashboard/contains" element={<AdminContains />} />
+        <Route path="/admin/dashboard/inventories" element={<AdminInventories />} />
       </Routes>
     </Router>
   );

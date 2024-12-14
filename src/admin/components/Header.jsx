@@ -54,6 +54,21 @@ const AdminHeader = () => {
                 Awards
               </Link>
             </li>
+            <li className={`nav-item ${location.pathname === '/admin/dashboard/warehouses' ? 'active' : ''}`}>
+              <Link className="nav-link" to="/admin/dashboard/warehouses">
+                Warehouses
+              </Link>
+            </li>
+            <li className={`nav-item ${location.pathname === '/admin/dashboard/contains' ? 'active' : ''}`}>
+              <Link className="nav-link" to="/admin/dashboard/contains">
+                Contains
+              </Link>
+            </li>
+            <li className={`nav-item ${location.pathname === '/admin/dashboard/inventories' ? 'active' : ''}`}>
+              <Link className="nav-link" to="/admin/dashboard/inventories">
+                Inventories
+              </Link>
+            </li>
           </ul>
           <button className="btn btn-outline-danger" onClick={handleLogout}>
             Logout
