@@ -17,7 +17,7 @@ const AdminLogin = () => {
 
       // Save the token to cookies
       Cookies.set('authToken', response.data.token, { expires: 1 }); // Expires in 1 day
-      navigate('/admin/dashboard');
+      navigate('/admin/dashboard/books');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     }

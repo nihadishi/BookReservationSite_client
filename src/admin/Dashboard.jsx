@@ -1,12 +1,14 @@
-import React from 'react'
-import CookiesCheck from '../controls/Cookies'
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import AdminHeader from './components/Header';
 
-const AdminDashboard = () => {
+const Dashboard = () => {
+
+
   return (
-    <CookiesCheck>
-        <div>AdminDashboard</div>
-    </CookiesCheck>
-  )
-}
+   <AdminHeader/>
+  );
+};
 
-export default AdminDashboard
+export default Dashboard;

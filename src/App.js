@@ -10,6 +10,9 @@ import Search from './user/Search';
 import Detail from './user/Detail';
 import AdminLogin from './admin/Login';
 import AdminDashboard from './admin/Dashboard';
+import AdminBooks from './admin/Books';
+import AdminAuthors from './admin/Authors';
+import AdminAwards from './admin/Awards';
 
 axios.defaults.baseURL = 'http://localhost:2021';
 axios.defaults.withCredentials = true;
@@ -26,7 +29,10 @@ function App() {
         <Route path="/basket" element={<Basket />} />
         <Route path="/reservations" element={<Reservation />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/dashboard/" element={<AdminDashboard />} />
+        <Route path="/admin/dashboard/books" element={<AdminBooks />} />
+        <Route path="/admin/dashboard/authors" element={<AdminAuthors />} />
+        <Route path="/admin/dashboard/awards" element={<AdminAwards />} />
       </Routes>
     </Router>
   );

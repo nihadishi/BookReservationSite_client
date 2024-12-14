@@ -62,7 +62,7 @@ const LoginAndRegister = () => {
         >
           {/* Login */}
           <div className="form-section w-50 p-4 ">
-            <h4 className="text-center text-primary">Login</h4>
+            <h4 className="text-center text-primary"> User Login</h4>
             <form onSubmit={handleLoginSubmit}>
               <div className="form-floating mb-3">
                 <input
@@ -100,7 +100,7 @@ const LoginAndRegister = () => {
 
           {/* Register Form */}
           <div className="form-section w-50 p-4 ">
-            <h4 className="text-center text-success">Register</h4>
+            <h4 className="text-center text-success">User Register</h4>
             <form onSubmit={handleRegisterSubmit}>
               <div className="form-floating mb-3">
                 <input
