@@ -50,19 +50,23 @@ const Basket = () => {
     );
   }
 
-  if (error) {
-    return <>
-    <Header/>
-    <div className="alert alert-danger">{error}</div>;</>
-  }
-
   return (
     <CookiesCheck>
       <Header />
       <div className="container mt-4">
         <h2>Your Baskets</h2>
         {baskets.length === 0 ? (
-          <div className="alert alert-info mt-4">No baskets found.</div>
+         <div
+         className="d-flex justify-content-center align-items-center vh-100"
+         style={{ width: '100%' }}
+       >
+         <div
+           className="alert alert-info text-center"
+           style={{ width: '200px' }}
+         >
+           You don't have any baskets. Continue to shopping, it will created automatically
+         </div>
+       </div>
         ) : (
           baskets.map((basket) => (
             <div key={basket.BasketID} className="card shadow-sm mb-4">
