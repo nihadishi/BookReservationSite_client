@@ -13,12 +13,10 @@ const AdminLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/auth/admin/login', { email, password });
+      const response = await axios.post('/admin/login', { email, password });
 
       // Save the token to cookies
       Cookies.set('authToken', response.data.token, { expires: 1 }); // Expires in 1 day
-
-      // Redirect to the admin dashboard
       navigate('/admin/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');

@@ -9,6 +9,7 @@ import Reservation from './user/Reservation';
 import Search from './user/Search';
 import Detail from './user/Detail';
 import AdminLogin from './admin/Login';
+import AdminDashboard from './admin/Dashboard';
 
 axios.defaults.baseURL = 'http://localhost:2021';
 axios.defaults.withCredentials = true;
@@ -25,7 +26,7 @@ function App() {
         <Route path="/basket" element={<Basket />} />
         <Route path="/reservations" element={<Reservation />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        {/* <Route path="/admin" element={<AdminLogin />} /> */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
